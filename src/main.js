@@ -2,20 +2,21 @@ import * as utils from './utils';
 import TreeNode from "./tree-node";
 import './style.css';
 
-let currentTree = new TreeNode(null, [new TreeNode('')]);
+let currentTree;
+
+let textRoot;
 
 window.addEventListener('load', () => {
-  const textRoot = document.getElementById('text-root');
-  currentTree.setElements(null, null, textRoot);
-  renderTreeNode(textRoot, currentTree);
+  textRoot = document.getElementById('text-root');
+
+  constructTree(new TreeNode(null, [new TreeNode('')]));
 
   const openButton = document.getElementById('open-button');
   openButton.addEventListener('click', async e => {
     const files = await utils.openFile();
     const content = await utils.readAsText(files[0]);
-    currentTree = TreeNode.fromObject(JSON.parse(content));
     utils.removeChildNodes(textRoot);
-    renderTreeNode(textRoot, currentTree);
+    constructTree(TreeNode.fromObject(JSON.parse(content)))
   });
 
   const saveButton = document.getElementById('save-button');
@@ -23,6 +24,12 @@ window.addEventListener('load', () => {
     utils.saveFile('Untitled.json', JSON.stringify(currentTree.toObject()));
   });
 });
+
+function constructTree(rootNode) {
+  currentTree = rootNode;
+  rootNode.setElements(null, null, textRoot);
+  renderTreeNode(textRoot, rootNode);
+}
 
 function renderTreeNode(container, parent) {
   if (parent.children == null) {
