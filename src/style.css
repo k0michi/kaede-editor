@@ -2,6 +2,7 @@ body {
   background-color: #1d1d1d;
   color: #ffffff;
   margin: 4px;
+  font-family: sans-serif;
 }
 
 .cell {
