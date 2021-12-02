@@ -65,6 +65,24 @@ function createCell(node) {
 
   cell.addEventListener('input', e => {
     node.value = cell.textContent;
+
+    let level = 0;
+
+    for (let i = 0; i < node.value.length; i++) {
+      if (node.value[i] == '*') {
+        level++;
+      } else {
+        break;
+      }
+    }
+
+    const color = getColor(level);
+
+    if (color != null) {
+      cell.style.color = color;
+    } else {
+      cell.style.color = '';
+    }
   });
 
   cell.addEventListener('keydown', e => {
@@ -133,4 +151,15 @@ function createCell(node) {
   });
 
   return cell;
+}
+
+function getColor(level) {
+  switch (level) {
+    case 1:
+      return "rgb(194, 255, 74)";
+    case 2:
+      return "rgb(240, 255, 74)";
+    case 3:
+      return "rgb(255, 141, 74)";
+  }
 }
