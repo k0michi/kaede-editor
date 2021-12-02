@@ -11,7 +11,14 @@ export default class TreeNode {
   appendChild(child) {
     this.children.push(child);
     child.setParent(this);
-    this.columnContainer.append(child.rowContainer);
+    this.columnContainer.appendChild(child.rowContainer);
+  }
+
+  removeChild(child) {
+    // Remove child from this.children
+    this.children.splice(this.children.indexOf(child), 1);
+    child.setParent(null);
+    this.columnContainer.removeChild(child.rowContainer);
   }
 
   setParent(parent) {
@@ -22,6 +29,10 @@ export default class TreeNode {
     this.cell = cell;
     this.rowContainer = rowContainer;
     this.columnContainer = columnContainer;
+  }
+
+  isLeafNode() {
+    return this.children.length == 0;
   }
 
   toObject() {

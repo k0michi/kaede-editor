@@ -56,6 +56,10 @@ function createCell(node) {
   cell.className = 'cell';
   cell.textContent = node.value;
 
+  cell.addEventListener('change', e=>{
+    node.value = cell.textContent;
+  });
+
   cell.addEventListener('keydown', e => {
     // Check if the stroke was not for IME conversion
     if (e.code == 'Enter' && e.keyCode == 13) {
@@ -95,6 +99,12 @@ function createCell(node) {
           node.appendChild(newNode);
           newNode.cell.focus();
         }
+      }
+    }
+
+    if (e.code == 'Backspace') {
+      if (node.value == '' && node.isLeafNode()) {
+        node.parent.removeChild(node);
       }
     }
   });
