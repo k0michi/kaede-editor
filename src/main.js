@@ -29,11 +29,6 @@ window.addEventListener('load', () => {
   });
 });
 
-function highlight(editor) {
-  const code = editor.textContent;
-  editor.innerHTML = code;
-}
-
 function appendTreeNode(container, parent) {
   if (parent.children == null) {
     return;
