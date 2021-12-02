@@ -1,35 +1,30 @@
 import * as utils from './utils';
+import TreeNode from "./tree-node";
 import './style.css';
 
-let currentDocument = {
-  children: [
-    {
-      value: '',
-      children: []
-    }
-  ]
-};
+let currentTree = new TreeNode(null, [new TreeNode('')]);
 
 window.addEventListener('load', () => {
   const textRoot = document.getElementById('text-root');
-  appendTreeNode(textRoot, currentDocument);
+  currentTree.setElements(null, null, textRoot);
+  renderTreeNode(textRoot, currentTree);
 
   const openButton = document.getElementById('open-button');
   openButton.addEventListener('click', async e => {
     const files = await utils.openFile();
     const content = await utils.readAsText(files[0]);
-    currentDocument = JSON.parse(content);
+    currentTree = TreeNode.fromObject(JSON.parse(content));
     utils.removeChildNodes(textRoot);
-    appendTreeNode(textRoot, currentDocument);
+    renderTreeNode(textRoot, currentTree);
   });
 
   const saveButton = document.getElementById('save-button');
   saveButton.addEventListener('click', e => {
-    utils.saveFile('Untitled.json', JSON.stringify(currentDocument));
+    utils.saveFile('Untitled.json', JSON.stringify(currentTree.toObject()));
   });
 });
 
-function appendTreeNode(container, parent) {
+function renderTreeNode(container, parent) {
   if (parent.children == null) {
     return;
   }
@@ -46,15 +41,17 @@ function appendTreeNode(container, parent) {
     const columnContainer = document.createElement('div');
     columnContainer.className = 'column-container';
     rowContainer.appendChild(columnContainer);
-    appendTreeNode(columnContainer, child);
+    renderTreeNode(columnContainer, child);
+
+    child.setElements(cell, rowContainer, columnContainer);
 
     container.appendChild(rowContainer);
+    console.log(child)
   }
 }
 
 function createCellContainer(node) {
   const cell = createCell(node);
-  node.cell = cell;
 
   const rowContainer = document.createElement('div');
   rowContainer.className = 'row-container';
@@ -63,6 +60,8 @@ function createCellContainer(node) {
   const columnContainer = document.createElement('div');
   columnContainer.className = 'column-container';
   rowContainer.appendChild(columnContainer);
+
+  node.setElements(cell, rowContainer, columnContainer);
 
   return rowContainer;
 }
@@ -87,10 +86,9 @@ function createCell(node) {
         if (node.parent.children[index + 1]?.cell != null) {
           node.parent.children[index + 1].cell.focus();
         } else {
-          const newNode = { value: '', parent: node.parent, children: [] };
-          const container = createCellContainer(newNode);
-          node.parent.children.push(newNode);
-          node.parent.cell.nextSibling.appendChild(container);
+          const newNode = new TreeNode('');
+          createCellContainer(newNode);
+          node.parent.appendChild(newNode);
           newNode.cell.focus();
         }
       }
@@ -107,10 +105,9 @@ function createCell(node) {
         if (node.children[0]?.cell != null) {
           node.children[0].cell.focus();
         } else {
-          const newNode = { value: '', parent: node, children: [] };
-          const container = createCellContainer(newNode);
-          node.children.push(newNode);
-          node.cell.nextSibling.appendChild(container);
+          const newNode = new TreeNode('');
+          createCellContainer(newNode);
+          node.appendChild(newNode);
           newNode.cell.focus();
         }
       }
