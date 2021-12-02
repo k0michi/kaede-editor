@@ -31,6 +31,18 @@ export default class TreeNode {
     this.columnContainer = columnContainer;
   }
 
+  focus() {
+    this.cell.focus();
+  }
+
+  nextSibling(node) {
+    return this.children[this.children.indexOf(node) + 1];
+  }
+
+  previousSibling(node) {
+    return this.children[this.children.indexOf(node) - 1];
+  }
+
   isLeafNode() {
     return this.children.length == 0;
   }

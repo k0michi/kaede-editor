@@ -104,6 +104,14 @@ function createCell(node) {
 
     if (e.code == 'Backspace') {
       if (node.value == '' && node.isLeafNode()) {
+        const prev = node.parent.previousSibling(node);
+
+        if (prev != null) {
+          prev.focus();
+        } else {
+          node.parent.focus();
+        }
+
         node.parent.removeChild(node);
       }
     }
