@@ -73,7 +73,8 @@ function createCell(node) {
   cell.textContent = node.value;
 
   cell.addEventListener('keydown', e => {
-    if (e.code == 'Enter') {
+    // Check if the stroke was not for IME conversion
+    if (e.code == 'Enter' && e.keyCode == 13) {
       e.preventDefault();
 
       const index = node.parent.children.indexOf(node);
