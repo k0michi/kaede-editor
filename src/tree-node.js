@@ -47,6 +47,10 @@ export default class TreeNode {
     return this.children.length == 0;
   }
 
+  isRootNode() {
+    return this.value == null;
+  }
+
   toObject() {
     const children = [];
 

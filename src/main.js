@@ -103,7 +103,7 @@ function createCell(node) {
     }
 
     if (e.code == 'Backspace') {
-      if (node.value == '' && node.isLeafNode()) {
+      if (node.value == '' && node.isLeafNode() && !(node.parent.isRootNode() && node.parent.children.length == 1)) {
         const prev = node.parent.previousSibling(node);
 
         if (prev != null) {
