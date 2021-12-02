@@ -56,7 +56,7 @@ function createCell(node) {
   cell.className = 'cell';
   cell.textContent = node.value;
 
-  cell.addEventListener('change', e=>{
+  cell.addEventListener('input', e => {
     node.value = cell.textContent;
   });
 
