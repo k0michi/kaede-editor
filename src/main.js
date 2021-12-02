@@ -30,23 +30,9 @@ function renderTreeNode(container, parent) {
   }
 
   for (const child of parent.children) {
-    const cell = createCell(child);
-    child.parent = parent;
-    child.cell = cell;
-
-    const rowContainer = document.createElement('div');
-    rowContainer.className = 'row-container';
-    rowContainer.appendChild(cell);
-
-    const columnContainer = document.createElement('div');
-    columnContainer.className = 'column-container';
-    rowContainer.appendChild(columnContainer);
-    renderTreeNode(columnContainer, child);
-
-    child.setElements(cell, rowContainer, columnContainer);
-
-    container.appendChild(rowContainer);
-    console.log(child)
+    createCellContainer(child);
+    renderTreeNode(child.columnContainer, child);
+    container.appendChild(child.rowContainer);
   }
 }
 
@@ -62,8 +48,6 @@ function createCellContainer(node) {
   rowContainer.appendChild(columnContainer);
 
   node.setElements(cell, rowContainer, columnContainer);
-
-  return rowContainer;
 }
 
 function createCell(node) {
