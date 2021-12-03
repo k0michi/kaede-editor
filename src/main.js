@@ -1,12 +1,14 @@
 import * as utils from './utils';
 import TreeNode from "./tree-node";
 import './style.css';
+import icon from './kaede.png';
 
 let currentTree;
 
 let textRoot;
 
 window.addEventListener('load', () => {
+  document.getElementById('icon').src = icon;
   const menus = document.getElementById('menus');
 
   for (const menu of menus.getElementsByClassName('menu')) {

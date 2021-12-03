@@ -65,14 +65,23 @@ body {
 #menus {
   display: flex;
   flex-direction: row;
+  height: 32px;
+  background-color: #111111;
+}
+
+#icon {
+  width: 24px;
+  height: 24px;
+  margin: auto 8px auto 8px;
 }
 
 .menu-button {
   position: relative;
-  background-color: #111111;
+  background-color: #00000000;
   color: #ffffff;
   font-size: 14px;
-  padding: 8px;
+  line-height: 32px;
+  padding: 0px 8px 0px 8px;
   border: none;
 }
 
@@ -96,7 +105,8 @@ body {
   background-color: #111111;
   color: #ffffff;
   font-size: 14px;
-  padding: 8px;
+  line-height: 32px;
+  padding: 0px 8px 0px 8px;
   border: none;
 }
 

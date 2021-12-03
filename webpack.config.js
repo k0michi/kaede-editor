@@ -22,6 +22,10 @@ const config = {
           'style-loader',
           'css-loader'
         ]
+      },
+      {
+        test: /\.png$/,
+        type: 'asset/resource'
       }
     ]
   },
