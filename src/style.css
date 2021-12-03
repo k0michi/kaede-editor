@@ -18,6 +18,22 @@ body {
   outline: none;
 }
 
+.color-1 {
+  color: rgb(194, 255, 74);
+}
+
+.color-2 {
+  color: rgb(240, 255, 74);
+}
+
+.color-3 {
+  color: rgb(255, 141, 74);
+}
+
+.color-m1 {
+  color: rgb(160, 160, 160);
+}
+
 .focus {
   border: solid 1px #a7a7a7;
 }

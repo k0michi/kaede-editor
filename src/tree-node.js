@@ -2,6 +2,7 @@ export default class TreeNode {
   constructor(value, children = []) {
     this.value = value;
     this.children = children;
+    this.colorID = 0;
 
     for (const child of children) {
       child.setParent(this);
@@ -33,6 +34,12 @@ export default class TreeNode {
 
   focus() {
     this.cell.focus();
+  }
+
+  setColor(colorID) {
+    this.cell.classList.remove(`color-${this.colorID < 0 ? 'm' : ''}${Math.abs(this.colorID)}`);
+    this.cell.classList.add(`color-${colorID < 0 ? 'm' : ''}${Math.abs(colorID)}`);
+    this.colorID = colorID;
   }
 
   nextSibling(node) {

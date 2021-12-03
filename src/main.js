@@ -55,6 +55,26 @@ function createCellContainer(node) {
   rowContainer.appendChild(columnContainer);
 
   node.setElements(cell, rowContainer, columnContainer);
+  node.setColor(getLevel(node.value));
+}
+
+function getLevel(string) {
+  const firstChar = string[0];
+  let level = 0;
+
+  if (firstChar == '*' || firstChar == '/') {
+    for (let i = 0; i < string.length; i++) {
+      if (string[i] == firstChar) {
+        level++;
+      }
+    }
+
+    if (firstChar == '/') {
+      level *= -1;
+    }
+  }
+
+  return level;
 }
 
 function createCell(node) {
@@ -65,24 +85,7 @@ function createCell(node) {
 
   cell.addEventListener('input', e => {
     node.value = cell.textContent;
-
-    let level = 0;
-
-    for (let i = 0; i < node.value.length; i++) {
-      if (node.value[i] == '*') {
-        level++;
-      } else {
-        break;
-      }
-    }
-
-    const color = getColor(level);
-
-    if (color != null) {
-      cell.style.color = color;
-    } else {
-      cell.style.color = '';
-    }
+    node.setColor(getLevel(node.value));
   });
 
   cell.addEventListener('keydown', e => {
@@ -151,15 +154,4 @@ function createCell(node) {
   });
 
   return cell;
-}
-
-function getColor(level) {
-  switch (level) {
-    case 1:
-      return "rgb(194, 255, 74)";
-    case 2:
-      return "rgb(240, 255, 74)";
-    case 3:
-      return "rgb(255, 141, 74)";
-  }
 }
