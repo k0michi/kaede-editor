@@ -17,7 +17,8 @@ export function readAsText(file) {
 
 export function saveFile(filename, content) {
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([content], { type: 'text/plain' }));
+  const url = URL.createObjectURL(new Blob([content], { type: 'text/plain' }))
+  a.href = url;
   a.download = filename;
   a.click();
   URL.revokeObjectURL(url);
