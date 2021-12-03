@@ -1,8 +1,21 @@
 body {
   background-color: #1d1d1d;
   color: #ffffff;
-  margin: 4px;
+  margin: 0px;
   font-family: sans-serif;
+}
+
+#root {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#text-root {
+  flex: 1;
+  min-height: 0;
+  overflow-x: auto;
 }
 
 .cell {
@@ -16,6 +29,17 @@ body {
   padding: 4px;
   word-break: break-all;
   outline: none;
+}
+
+.row-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.column-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
 }
 
 .color-1 {
@@ -36,14 +60,4 @@ body {
 
 .focus {
   border: solid 1px #a7a7a7;
-}
-
-.row-container {
-  display: flex;
-  flex-direction: row;
-}
-
-.column-container {
-  display: flex;
-  flex-direction: column;
 }
