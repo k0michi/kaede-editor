@@ -61,3 +61,45 @@ body {
 .focus {
   border: solid 1px #a7a7a7;
 }
+
+#menus {
+  display: flex;
+  flex-direction: row;
+}
+
+.menu-button {
+  position: relative;
+  background-color: #111111;
+  color: #ffffff;
+  font-size: 14px;
+  padding: 8px;
+  border: none;
+}
+
+.menu.open .menu-button {
+  background-color: #464646;
+}
+
+.menu-items {
+  display: none;
+  position: absolute;
+  z-index: 1;
+}
+
+.menu.open .menu-items {
+  display: block;
+}
+
+.menu-items>* {
+  display: block;
+  width: 100%;
+  background-color: #111111;
+  color: #ffffff;
+  font-size: 14px;
+  padding: 8px;
+  border: none;
+}
+
+.menu-items>*:hover {
+  background-color: #464646;
+}

@@ -7,6 +7,18 @@ let currentTree;
 let textRoot;
 
 window.addEventListener('load', () => {
+  const menus = document.getElementById('menus');
+
+  for (const menu of menus.getElementsByClassName('menu')) {
+    menu.addEventListener('click', e => {
+      if (menu.classList.contains('open')) {
+        menu.classList.remove('open');
+      } else {
+        menu.classList.add('open');
+      }
+    });
+  }
+
   textRoot = document.getElementById('text-root');
 
   constructTree(new TreeNode(null, [new TreeNode('')]));
