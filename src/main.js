@@ -41,7 +41,7 @@ window.addEventListener('load', () => {
   constructTree(new TreeNode(null, [new TreeNode('')]));
 
   const openButton = document.getElementById('open-button');
-  openButton.addEventListener('click', async e => {
+  openButton.addEventListener('mouseup', async e => {
     const files = await utils.openFile();
     const content = await utils.readAsText(files[0]);
     utils.removeChildNodes(textRoot);
@@ -49,7 +49,7 @@ window.addEventListener('load', () => {
   });
 
   const saveButton = document.getElementById('save-button');
-  saveButton.addEventListener('click', e => {
+  saveButton.addEventListener('mouseup', e => {
     utils.saveFile('Untitled.json', JSON.stringify(currentTree.toObject()));
   });
 });
