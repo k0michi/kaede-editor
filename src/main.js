@@ -4,22 +4,40 @@ import './style.css';
 import icon from './kaede.png';
 
 let currentTree;
-
 let textRoot;
+let draggedMenu;
 
 window.addEventListener('load', () => {
   document.getElementById('icon').src = icon;
   const menus = document.getElementById('menus');
 
   for (const menu of menus.getElementsByClassName('menu')) {
-    menu.addEventListener('click', e => {
-      if (menu.classList.contains('open')) {
+    const menuButton = menu.getElementsByClassName('menu-button')[0];
+
+    menuButton.addEventListener('mousedown', e => {
+      if (draggedMenu == menu) {
+        draggedMenu = null;
         menu.classList.remove('open');
+        console.log(e)
       } else {
+        draggedMenu = menu;
         menu.classList.add('open');
+        console.log(e)
       }
     });
   }
+
+  document.body.addEventListener('mouseup', e => {
+    if (draggedMenu != null) {
+      const menuButton = draggedMenu.getElementsByClassName('menu-button')[0];
+
+      if (e.target != menuButton) {
+        draggedMenu.classList.remove('open');
+        draggedMenu = null;
+        console.log(e)
+      }
+    }
+  });
 
   textRoot = document.getElementById('text-root');
 
