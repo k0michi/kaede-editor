@@ -60,9 +60,25 @@ window.addEventListener('load', () => {
     utils.saveFile(currentFile.name, JSON.stringify(currentFile.tree.toObject()));
   });
 
+  const closeButton = document.getElementById('close-button');
+  closeButton.addEventListener('mouseup', e => {
+    closeTab();
+  });
+
   tabs = document.getElementById('tabs');
   openTree('Untitled', newBlankTree());
 });
+
+function closeTab() {
+  const index = files.indexOf(currentFile);
+  const nextFile = files[index + 1] ?? files[index - 1];
+
+  tabs.removeChild(currentFile.tab);
+
+  if (nextFile != null) {
+    selectTab(nextFile);
+  }
+}
 
 function newBlankTree() {
   return new TreeNode(null, [new TreeNode('')]);
@@ -70,18 +86,23 @@ function newBlankTree() {
 
 function openTree(filename, tree) {
   const tab = document.createElement('div');
+  tab.className = 'tab';
   tab.textContent = filename;
   tabs.appendChild(tab);
   constructTree(tree);
-  const file = { name: filename, tree };
+  const file = { name: filename, tree, tab };
   files.push(file);
   currentFile = file;
 
   tab.addEventListener('click', e => {
-    utils.removeChildNodes(textRoot);
-    textRoot.appendChild(tree.columnContainer);
-    currentFile = file;
+    selectTab(file);
   });
+}
+
+function selectTab(file) {
+  utils.removeChildNodes(textRoot);
+  textRoot.appendChild(file.tree.columnContainer);
+  currentFile = file;
 }
 
 function constructTree(rootNode) {
