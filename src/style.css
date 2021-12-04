@@ -67,6 +67,7 @@ body {
   flex-direction: row;
   height: 32px;
   background-color: #111111;
+  user-select: none;
 }
 
 #icon {
@@ -83,6 +84,7 @@ body {
   line-height: 32px;
   padding: 0px 8px 0px 8px;
   border: none;
+  outline: none;
 }
 
 .menu.open .menu-button {
@@ -122,6 +124,7 @@ body {
   padding: 0px 8px 0px 8px;
   border: none;
   text-align: left;
+  outline: none;
 }
 
 .menu-items>*:hover {
