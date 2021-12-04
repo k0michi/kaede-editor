@@ -42,7 +42,6 @@ window.addEventListener('load', () => {
 
   const newButton = document.getElementById('new-button');
   newButton.addEventListener('mouseup', e => {
-    utils.removeChildNodes(textRoot);
     openTree('Untitled', newBlankTree());
   });
 
@@ -51,7 +50,6 @@ window.addEventListener('load', () => {
     const files = await utils.openFile();
     const file = files[0];
     const content = await utils.readAsText(file);
-    utils.removeChildNodes(textRoot);
     openTree(file.name, TreeNode.fromObject(JSON.parse(content)));
   });
 
