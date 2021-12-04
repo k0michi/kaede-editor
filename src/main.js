@@ -92,7 +92,7 @@ function openTree(filename, tree) {
   files.push(file);
   selectTab(file);
 
-  tab.addEventListener('click', e => {
+  tab.addEventListener('mousedown', e => {
     selectTab(file);
   });
 }
