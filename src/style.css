@@ -121,6 +121,7 @@ body {
   line-height: 32px;
   padding: 0px 8px 0px 8px;
   border: none;
+  text-align: left;
 }
 
 .menu-items>*:hover {
