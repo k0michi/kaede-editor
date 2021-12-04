@@ -72,9 +72,15 @@ function closeTab() {
   const nextFile = files[index + 1] ?? files[index - 1];
 
   tabs.removeChild(currentFile.tab);
+  files.splice(index, 1);
 
   if (nextFile != null) {
     selectTab(nextFile);
+  }
+
+  // All tabs were closed
+  if (files == 0) {
+    openTree('Untitled', newBlankTree());
   }
 }
 
