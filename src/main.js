@@ -7,6 +7,7 @@ let textRoot;
 let draggedMenu;
 let tabs;
 let files = [];
+let currentFile;
 
 window.addEventListener('load', () => {
   document.getElementById('icon').src = icon;
@@ -56,8 +57,7 @@ window.addEventListener('load', () => {
 
   const saveButton = document.getElementById('save-button');
   saveButton.addEventListener('mouseup', e => {
-    // FIX
-    utils.saveFile('Untitled.json', JSON.stringify(currentTree.toObject()));
+    utils.saveFile(currentFile.name, JSON.stringify(currentFile.tree.toObject()));
   });
 
   tabs = document.getElementById('tabs');
@@ -73,11 +73,14 @@ function openTree(filename, tree) {
   tab.textContent = filename;
   tabs.appendChild(tab);
   constructTree(tree);
-  files.push({ name: filename, tree });
+  const file = { name: filename, tree };
+  files.push(file);
+  currentFile = file;
 
   tab.addEventListener('click', e => {
     utils.removeChildNodes(textRoot);
     textRoot.appendChild(tree.columnContainer);
+    currentFile = file;
   });
 }
 
