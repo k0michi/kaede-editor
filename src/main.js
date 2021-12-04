@@ -38,7 +38,13 @@ window.addEventListener('load', () => {
 
   textRoot = document.getElementById('text-root');
 
-  constructTree(new TreeNode(null, [new TreeNode('')]));
+  constructTree(newBlankTree());
+
+  const newButton = document.getElementById('new-button');
+  newButton.addEventListener('mouseup', e => {
+    utils.removeChildNodes(textRoot);
+    constructTree(newBlankTree());
+  });
 
   const openButton = document.getElementById('open-button');
   openButton.addEventListener('mouseup', async e => {
@@ -53,6 +59,10 @@ window.addEventListener('load', () => {
     utils.saveFile('Untitled.json', JSON.stringify(currentTree.toObject()));
   });
 });
+
+function newBlankTree() {
+  return new TreeNode(null, [new TreeNode('')]);
+}
 
 function constructTree(rootNode) {
   currentTree = rootNode;
