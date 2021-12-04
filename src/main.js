@@ -3,9 +3,10 @@ import TreeNode from "./tree-node";
 import './style.css';
 import icon from './kaede.png';
 
-let currentTree;
 let textRoot;
 let draggedMenu;
+let tabs;
+let files = [];
 
 window.addEventListener('load', () => {
   document.getElementById('icon').src = icon;
@@ -36,38 +37,56 @@ window.addEventListener('load', () => {
     }
   });
 
-  textRoot = document.getElementById('text-root');
-
-  constructTree(newBlankTree());
+  textRoot = document.getElementById('tree');
 
   const newButton = document.getElementById('new-button');
   newButton.addEventListener('mouseup', e => {
     utils.removeChildNodes(textRoot);
-    constructTree(newBlankTree());
+    openTree('Untitled', newBlankTree());
   });
 
   const openButton = document.getElementById('open-button');
   openButton.addEventListener('mouseup', async e => {
     const files = await utils.openFile();
-    const content = await utils.readAsText(files[0]);
+    const file = files[0];
+    const content = await utils.readAsText(file);
     utils.removeChildNodes(textRoot);
-    constructTree(TreeNode.fromObject(JSON.parse(content)))
+    openTree(file.name, TreeNode.fromObject(JSON.parse(content)));
   });
 
   const saveButton = document.getElementById('save-button');
   saveButton.addEventListener('mouseup', e => {
+    // FIX
     utils.saveFile('Untitled.json', JSON.stringify(currentTree.toObject()));
   });
+
+  tabs = document.getElementById('tabs');
+  openTree('Untitled', newBlankTree());
 });
 
 function newBlankTree() {
   return new TreeNode(null, [new TreeNode('')]);
 }
 
+function openTree(filename, tree) {
+  const tab = document.createElement('div');
+  tab.textContent = filename;
+  tabs.appendChild(tab);
+  constructTree(tree);
+  files.push({ name: filename, tree });
+
+  tab.addEventListener('click', e => {
+    utils.removeChildNodes(textRoot);
+    textRoot.appendChild(tree.columnContainer);
+  });
+}
+
 function constructTree(rootNode) {
-  currentTree = rootNode;
-  rootNode.setElements(null, null, textRoot);
-  renderTreeNode(textRoot, rootNode);
+  const columnContainer = document.createElement('div');
+  columnContainer.className = 'column-container';
+  textRoot.appendChild(columnContainer);
+  rootNode.setElements(null, null, columnContainer);
+  renderTreeNode(columnContainer, rootNode);
 }
 
 function renderTreeNode(container, parent) {
