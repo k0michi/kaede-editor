@@ -1,5 +1,5 @@
 import * as utils from './utils';
-import TreeNode from "./tree-node";
+import TreeNode from './tree-node';
 import './style.css';
 import icon from './kaede.png';
 
@@ -8,6 +8,7 @@ let draggedMenu;
 let tabs;
 let files = [];
 let currentFile;
+let preferIndent = false;
 
 window.addEventListener('load', () => {
   document.getElementById('icon').src = icon;
@@ -61,6 +62,19 @@ window.addEventListener('load', () => {
   const closeButton = document.getElementById('close-button');
   closeButton.addEventListener('mouseup', e => {
     closeTab();
+  });
+
+  const preferIndentButton = document.getElementById('prefer-indent-button');
+  preferIndentButton.addEventListener('mouseup', e => {
+    if (preferIndent) {
+      preferIndentButton.textContent = 'Prefer Indent';
+      textRoot.classList.remove('prefer-indent');
+      preferIndent = false;
+    } else {
+      preferIndentButton.textContent = '✓ Prefer Indent';
+      textRoot.classList.add('prefer-indent');
+      preferIndent = true;
+    }
   });
 
   tabs = document.getElementById('tabs');

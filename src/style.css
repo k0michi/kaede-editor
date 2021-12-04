@@ -41,6 +41,16 @@ body {
   flex-direction: row;
 }
 
+#tree.prefer-indent>.column-container>.row-container {
+  margin-left: 0px;
+}
+
+.prefer-indent .row-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 32px;
+}
+
 .column-container {
   display: flex;
   flex-direction: column;
