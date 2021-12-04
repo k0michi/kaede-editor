@@ -26,6 +26,14 @@ window.addEventListener('load', () => {
         menu.classList.add('open');
       }
     });
+
+    menuButton.addEventListener('mouseenter', e=>{
+      if (draggedMenu != null) {
+        draggedMenu.classList.remove('open');
+        menu.classList.add('open');
+        draggedMenu = menu;
+      }
+    });
   }
 
   document.body.addEventListener('mouseup', e => {
