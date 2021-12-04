@@ -18,11 +18,9 @@ window.addEventListener('load', () => {
       if (draggedMenu == menu) {
         draggedMenu = null;
         menu.classList.remove('open');
-        console.log(e)
       } else {
         draggedMenu = menu;
         menu.classList.add('open');
-        console.log(e)
       }
     });
   }
@@ -34,7 +32,6 @@ window.addEventListener('load', () => {
       if (e.target != menuButton) {
         draggedMenu.classList.remove('open');
         draggedMenu = null;
-        console.log(e)
       }
     }
   });
