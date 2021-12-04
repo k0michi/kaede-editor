@@ -144,7 +144,11 @@ body {
   user-select: none;
 }
 
-#tabs>* {
+.tab {
   padding: 0 8px 0 8px;
   line-height: 24px;
+}
+
+.tab.active {
+  background-color: #464646;
 }

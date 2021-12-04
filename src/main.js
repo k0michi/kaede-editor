@@ -92,7 +92,7 @@ function openTree(filename, tree) {
   constructTree(tree);
   const file = { name: filename, tree, tab };
   files.push(file);
-  currentFile = file;
+  selectTab(file);
 
   tab.addEventListener('click', e => {
     selectTab(file);
@@ -102,6 +102,8 @@ function openTree(filename, tree) {
 function selectTab(file) {
   utils.removeChildNodes(textRoot);
   textRoot.appendChild(file.tree.columnContainer);
+  currentFile?.tab.classList.remove('active');
+  file.tab.classList.add('active');
   currentFile = file;
 }
 
