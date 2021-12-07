@@ -3,7 +3,7 @@ import TreeNode from './tree-node';
 import './style.css';
 import { Menu, MenuBar, MenuItem, MenuItemRadio } from './menu';
 
-let textRoot;
+let tree;
 let tabs;
 let files = [];
 let currentFile;
@@ -49,9 +49,9 @@ window.addEventListener('load', () => {
   const preferIndentItem = new MenuItemRadio('Prefer Indent', false);
   preferIndentItem.on('selected', (e, checked) => {
     if (checked) {
-      textRoot.classList.add('prefer-indent');
+      tree.classList.add('prefer-indent');
     } else {
-      textRoot.classList.remove('prefer-indent');
+      tree.classList.remove('prefer-indent');
     }
   });
   viewMenu.addMenuItem(preferIndentItem);
@@ -68,10 +68,18 @@ window.addEventListener('load', () => {
     }
   });
 
-  root.insertBefore(menuBar.view.menuBar, root.firstChild);
+  root.appendChild(menuBar.view.menuBar);
 
-  textRoot = document.getElementById('tree');
-  tabs = document.getElementById('tabs');
+  tabs = document.createElement('div');
+  tabs.id = 'tabs';
+
+  root.appendChild(tabs);
+
+  tree = document.createElement('tree');
+  tree.id = 'tree';
+
+  root.appendChild(tree);
+
   openTree('Untitled', newBlankTree());
 });
 
@@ -112,8 +120,8 @@ function openTree(filename, tree) {
 }
 
 function selectTab(file) {
-  utils.removeChildNodes(textRoot);
-  textRoot.appendChild(file.tree.columnContainer);
+  utils.removeChildNodes(tree);
+  tree.appendChild(file.tree.columnContainer);
   currentFile?.tab.classList.remove('active');
   file.tab.classList.add('active');
   currentFile = file;
@@ -122,7 +130,7 @@ function selectTab(file) {
 function constructTree(rootNode) {
   const columnContainer = document.createElement('div');
   columnContainer.className = 'column-container';
-  textRoot.appendChild(columnContainer);
+  tree.appendChild(columnContainer);
   rootNode.setElements(null, null, columnContainer);
   renderTreeNode(columnContainer, rootNode);
 }
