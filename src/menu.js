@@ -88,13 +88,16 @@ export class Menu {
 }
 
 export class MenuItem {
-  constructor(text, onSelected) {
+  constructor(text) {
     this.text = text;
-    this.onSelected = onSelected;
 
     const menuItem = document.createElement('button');
     menuItem.classList.add('menu-item');
-    menuItem.addEventListener('mouseup', this.onSelected);
+    menuItem.addEventListener('mouseup', e => {
+      if (this.onSelected != null) {
+        this.onSelected(e);
+      }
+    });
     menuItem.textContent = text;
     this.view = { menuItem };
   }
@@ -103,28 +106,40 @@ export class MenuItem {
     this.text = text;
     this.view.menuItem.textContent = text;
   }
+
+  on(eventName, listener) {
+    if (eventName == 'selected') {
+      this.view.menuItem.addEventListener('mouseup', listener);
+    }
+  }
 }
 
 export class MenuItemRadio extends MenuItem {
-  constructor(text, checked, onSelected) {
-    super(MenuItemRadio.createMenuText(text, checked), (e => {
-      if (this.checked) {
-        this.setText(this.createMenuText(this.text, false));
-        this.checked = false;
-      } else {
-        this.setText(this.createMenuText(this.text, true));
-        this.checked = true;
-      }
-
-      onSelected(e);
-    }).bind(this));
-
+  constructor(text, checked) {
+    super(createMenuText(text, checked));
+    this.originalText = text;
     this.checked = checked;
   }
 
-  static createMenuText(text, checked) {
-    return checked ? `✓ ${text}` : text;
+  on(eventName, listener) {
+    if (eventName == 'selected') {
+      super.on('selected', e => {
+        if (this.checked) {
+          this.setText(createMenuText(this.originalText, false));
+          this.checked = false;
+        } else {
+          this.setText(createMenuText(this.originalText, true));
+          this.checked = true;
+        }
+
+        listener(e, this.checked);
+      });
+    }
   }
+}
+
+function createMenuText(text, checked) {
+  return checked ? `✓ ${text}` : text;
 }
 
 export class MenuItemGroup extends MenuItem {

@@ -14,13 +14,15 @@ window.addEventListener('load', () => {
   const menuBar = new MenuBar();
   const fileMenu = new Menu('File');
 
-  const newItem = new MenuItem('New', e => {
+  const newItem = new MenuItem('New');
+  newItem.on('selected', e => {
     console.log(e)
     openTree('Untitled', newBlankTree());
   });
   fileMenu.addMenuItem(newItem);
 
-  const openItem = new MenuItem('Open...', async e => {
+  const openItem = new MenuItem('Open...');
+  openItem.on('selected', async e => {
     const files = await utils.openFile();
     const file = files[0];
     const content = await utils.readAsText(file);
@@ -28,12 +30,14 @@ window.addEventListener('load', () => {
   });
   fileMenu.addMenuItem(openItem);
 
-  const saveAsItem = new MenuItem('Save as...', e => {
+  const saveAsItem = new MenuItem('Save as...');
+  saveAsItem.on('selected', e => {
     utils.saveFile(currentFile.name, JSON.stringify(currentFile.tree.toObject()));
   });
   fileMenu.addMenuItem(saveAsItem);
 
-  const closeItem = new MenuItem('Close', e => {
+  const closeItem = new MenuItem('Close');
+  closeItem.on('selected', e => {
     closeTab();
   });
   fileMenu.addMenuItem(closeItem);
@@ -42,8 +46,8 @@ window.addEventListener('load', () => {
 
   const viewMenu = new Menu('View');
 
-  /*
-  const preferIndentItem = new MenuItemRadio('Prefer Indent', false, (e, checked) => {
+  const preferIndentItem = new MenuItemRadio('Prefer Indent', false);
+  preferIndentItem.on('selected', (e, checked) => {
     if (checked) {
       textRoot.classList.add('prefer-indent');
     } else {
@@ -51,7 +55,6 @@ window.addEventListener('load', () => {
     }
   });
   viewMenu.addMenuItem(preferIndentItem);
-  */
 
   menuBar.addMenu(viewMenu);
 
