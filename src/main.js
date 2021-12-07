@@ -1,90 +1,73 @@
 import * as utils from './utils';
 import TreeNode from './tree-node';
 import './style.css';
-import icon from './kaede.png';
+import { Menu, MenuBar, MenuItem, MenuItemRadio } from './menu';
 
 let textRoot;
-let draggedMenu;
 let tabs;
 let files = [];
 let currentFile;
-let preferIndent = false;
 
 window.addEventListener('load', () => {
-  document.getElementById('icon').src = icon;
-  const menus = document.getElementById('menus');
+  const root = document.getElementById('root');
 
-  for (const menu of menus.getElementsByClassName('menu')) {
-    const menuButton = menu.getElementsByClassName('menu-button')[0];
+  const menuBar = new MenuBar();
+  const fileMenu = new Menu('File');
 
-    menuButton.addEventListener('mousedown', e => {
-      if (draggedMenu == menu) {
-        draggedMenu = null;
-        menu.classList.remove('open');
-      } else {
-        draggedMenu = menu;
-        menu.classList.add('open');
-      }
-    });
-
-    menuButton.addEventListener('mouseenter', e=>{
-      if (draggedMenu != null) {
-        draggedMenu.classList.remove('open');
-        menu.classList.add('open');
-        draggedMenu = menu;
-      }
-    });
-  }
-
-  document.body.addEventListener('mouseup', e => {
-    if (draggedMenu != null) {
-      const menuButton = draggedMenu.getElementsByClassName('menu-button')[0];
-
-      if (e.target != menuButton) {
-        draggedMenu.classList.remove('open');
-        draggedMenu = null;
-      }
-    }
-  });
-
-  textRoot = document.getElementById('tree');
-
-  const newButton = document.getElementById('new-button');
-  newButton.addEventListener('mouseup', e => {
+  const newItem = new MenuItem('New', e => {
+    console.log(e)
     openTree('Untitled', newBlankTree());
   });
+  fileMenu.addMenuItem(newItem);
 
-  const openButton = document.getElementById('open-button');
-  openButton.addEventListener('mouseup', async e => {
+  const openItem = new MenuItem('Open...', async e => {
     const files = await utils.openFile();
     const file = files[0];
     const content = await utils.readAsText(file);
     openTree(file.name, TreeNode.fromObject(JSON.parse(content)));
   });
+  fileMenu.addMenuItem(openItem);
 
-  const saveButton = document.getElementById('save-button');
-  saveButton.addEventListener('mouseup', e => {
+  const saveAsItem = new MenuItem('Save as...', e => {
     utils.saveFile(currentFile.name, JSON.stringify(currentFile.tree.toObject()));
   });
+  fileMenu.addMenuItem(saveAsItem);
 
-  const closeButton = document.getElementById('close-button');
-  closeButton.addEventListener('mouseup', e => {
+  const closeItem = new MenuItem('Close', e => {
     closeTab();
   });
+  fileMenu.addMenuItem(closeItem);
 
-  const preferIndentButton = document.getElementById('prefer-indent-button');
-  preferIndentButton.addEventListener('mouseup', e => {
-    if (preferIndent) {
-      preferIndentButton.textContent = 'Prefer Indent';
-      textRoot.classList.remove('prefer-indent');
-      preferIndent = false;
-    } else {
-      preferIndentButton.textContent = '✓ Prefer Indent';
+  menuBar.addMenu(fileMenu);
+
+  const viewMenu = new Menu('View');
+
+  /*
+  const preferIndentItem = new MenuItemRadio('Prefer Indent', false, (e, checked) => {
+    if (checked) {
       textRoot.classList.add('prefer-indent');
-      preferIndent = true;
+    } else {
+      textRoot.classList.remove('prefer-indent');
+    }
+  });
+  viewMenu.addMenuItem(preferIndentItem);
+  */
+
+  menuBar.addMenu(viewMenu);
+
+  document.body.addEventListener('mouseup', e => {
+    if (menuBar.druggedMenu != null) {
+      const menuButton = menuBar.druggedMenu.view.menuButton;
+
+      if (e.target != menuButton) {
+        menuBar.setDraggedMenu(null);
+      }
     }
   });
 
+  root.insertBefore(menuBar.view.menuBar, root.firstChild);
+
+  textRoot = document.getElementById('tree');
   tabs = document.getElementById('tabs');
   openTree('Untitled', newBlankTree());
 });

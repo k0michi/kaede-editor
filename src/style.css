@@ -76,7 +76,7 @@ body {
   border: solid 1px #a7a7a7;
 }
 
-#menus {
+#menu-bar {
   display: flex;
   flex-direction: row;
   height: 32px;
