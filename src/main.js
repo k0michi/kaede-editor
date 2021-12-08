@@ -1,5 +1,6 @@
 import * as utils from './utils';
 import TreeNode from './tree-node';
+import * as tspt from './tspt';
 import './style.css';
 import { Menu, MenuBar, MenuItem, MenuItemRadio } from './menu';
 
@@ -16,7 +17,6 @@ window.addEventListener('load', () => {
 
   const newItem = new MenuItem('New');
   newItem.on('selected', e => {
-    console.log(e)
     openTree('Untitled', newBlankTree());
   });
   fileMenu.addMenuItem(newItem);
@@ -26,7 +26,12 @@ window.addEventListener('load', () => {
     const files = await utils.openFile();
     const file = files[0];
     const content = await utils.readAsText(file);
-    openTree(file.name, TreeNode.fromObject(JSON.parse(content)));
+
+    if (file.name.endsWith('.json')) {
+      openTree(file.name, TreeNode.fromObject(JSON.parse(content)));
+    } else {
+      openTree(file.name, TreeNode.fromObject(tspt.parse(content)));
+    }
   });
   fileMenu.addMenuItem(openItem);
 
