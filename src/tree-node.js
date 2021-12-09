@@ -3,6 +3,11 @@ export default class TreeNode {
     this.value = value;
     this.children = children;
     this.colorID = 0;
+    this.view = {
+      cell: null,
+      rowContainer: null,
+      columnContainer: null
+    };
 
     for (const child of children) {
       child.setParent(this);
@@ -12,33 +17,31 @@ export default class TreeNode {
   appendChild(child) {
     this.children.push(child);
     child.setParent(this);
-    this.columnContainer.appendChild(child.rowContainer);
+    this.view.columnContainer.appendChild(child.view.rowContainer);
   }
 
   removeChild(child) {
     // Remove child from this.children
     this.children.splice(this.children.indexOf(child), 1);
     child.setParent(null);
-    this.columnContainer.removeChild(child.rowContainer);
+    this.view.columnContainer.removeChild(child.view.rowContainer);
   }
 
   setParent(parent) {
     this.parent = parent;
   }
 
-  setElements(cell, rowContainer, columnContainer) {
-    this.cell = cell;
-    this.rowContainer = rowContainer;
-    this.columnContainer = columnContainer;
+  setView(view) {
+    this.view = view;
   }
 
   focus() {
-    this.cell.focus();
+    this.view.cell.focus();
   }
 
   setColor(colorID) {
-    this.cell.classList.remove(`color-${this.colorID < 0 ? 'm' : ''}${Math.abs(this.colorID)}`);
-    this.cell.classList.add(`color-${colorID < 0 ? 'm' : ''}${Math.abs(colorID)}`);
+    this.view.cell.classList.remove(`color-${this.colorID < 0 ? 'm' : ''}${Math.abs(this.colorID)}`);
+    this.view.cell.classList.add(`color-${colorID < 0 ? 'm' : ''}${Math.abs(colorID)}`);
     this.colorID = colorID;
   }
 

@@ -126,7 +126,7 @@ function openTree(filename, tree) {
 
 function selectTab(file) {
   utils.removeChildNodes(tree);
-  tree.appendChild(file.tree.columnContainer);
+  tree.appendChild(file.tree.view.columnContainer);
   currentFile?.tab.classList.remove('active');
   file.tab.classList.add('active');
   currentFile = file;
@@ -136,7 +136,8 @@ function constructTree(rootNode) {
   const columnContainer = document.createElement('div');
   columnContainer.className = 'column-container';
   tree.appendChild(columnContainer);
-  rootNode.setElements(null, null, columnContainer);
+
+  rootNode.setView({cell: null, rowContainer: null, columnContainer});
   renderTreeNode(columnContainer, rootNode);
 }
 
@@ -147,8 +148,8 @@ function renderTreeNode(container, parent) {
 
   for (const child of parent.children) {
     createCellContainer(child);
-    renderTreeNode(child.columnContainer, child);
-    container.appendChild(child.rowContainer);
+    renderTreeNode(child.view.columnContainer, child);
+    container.appendChild(child.view.rowContainer);
   }
 }
 
@@ -163,7 +164,7 @@ function createCellContainer(node) {
   columnContainer.className = 'column-container';
   rowContainer.appendChild(columnContainer);
 
-  node.setElements(cell, rowContainer, columnContainer);
+  node.setView({cell, rowContainer, columnContainer});
   node.setColor(getLevel(node.value));
 }
 
@@ -207,17 +208,17 @@ function createCell(node) {
       const index = node.parent.children.indexOf(node);
 
       if (e.shiftKey) {
-        if (node.parent.children[index - 1]?.cell != null) {
-          node.parent.children[index - 1].cell.focus();
+        if (node.parent.children[index - 1]?.view.cell != null) {
+          node.parent.children[index - 1].view.cell.focus();
         }
       } else {
-        if (node.parent.children[index + 1]?.cell != null) {
-          node.parent.children[index + 1].cell.focus();
+        if (node.parent.children[index + 1]?.view.cell != null) {
+          node.parent.children[index + 1].view.cell.focus();
         } else {
           const newNode = new TreeNode('');
           createCellContainer(newNode);
           node.parent.appendChild(newNode);
-          newNode.cell.focus();
+          newNode.view.cell.focus();
         }
       }
     }
@@ -226,17 +227,17 @@ function createCell(node) {
       e.preventDefault();
 
       if (e.shiftKey) {
-        if (node.parent.cell != null) {
-          node.parent.cell.focus();
+        if (node.parent.view.cell != null) {
+          node.parent.view.cell.focus();
         }
       } else {
-        if (node.children[0]?.cell != null) {
-          node.children[0].cell.focus();
+        if (node.children[0]?.view.cell != null) {
+          node.children[0].view.cell.focus();
         } else {
           const newNode = new TreeNode('');
           createCellContainer(newNode);
           node.appendChild(newNode);
-          newNode.cell.focus();
+          newNode.view.cell.focus();
         }
       }
     }
